@@ -1,39 +1,27 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <style>
-      .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-      .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-      .back-link { color: #007bff; text-decoration: none; }
-      .back-link:hover { text-decoration: underline; }
-      .url-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-      .url-table th, .url-table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-      .url-table th { background-color: #f8f9fa; font-weight: bold; }
-      .url-table tr:hover { background-color: #f5f5f5; }
-      .short-url { color: #28a745; font-weight: bold; }
-      .original-url { max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .clicks { text-align: center; color: #6c757d; }
-      .date { color: #6c757d; font-size: 0.9em; }
-      .no-urls { text-align: center; padding: 40px; color: #6c757d; }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1><%= title %></h1>
-        <a href="/" class="back-link">← Voltar para página inicial</a>
-      </div>
-      
+<html lang="pt-BR">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <div class="page-section">
+    <div class="page-header">
+      <h1 class="page-title"><%= pageTitle %></h1>
       <% if (urls && urls.length > 0) { %>
-        <p>Total de URLs: <%= urls.length %></p>
-        
+        <p class="page-meta"><%= urls.length %> <%= urls.length === 1 ? 'URL' : 'URLs' %> encurtada<%= urls.length === 1 ? '' : 's' %></p>
+      <% } %>
+      <a href="/" class="back-link">← Voltar para página inicial</a>
+    </div>
+
+    <% if (urls && urls.length > 0) { %>
+      <div class="urls-table-wrap">
         <table class="url-table">
           <thead>
             <tr>
-              <th>URL Original</th>
-              <th>URL Curta</th>
+              <th>URL original</th>
+              <th>Link curto</th>
               <th>Código</th>
               <th>Clicks</th>
               <th>Criada em</th>
@@ -42,27 +30,26 @@
           <tbody>
             <% urls.forEach(function(url) { %>
               <tr>
-                <td class="original-url" title="<%= url.originalUrl %>">
-                  <%= url.originalUrl %>
+                <td class="original-url" title="<%= url.originalUrl %>"><%= url.originalUrl %></td>
+                <td class="short-url-cell">
+                  <a href="/<%= url.shortCode %>" target="_blank" rel="noopener"><%= url.shortCode %></a>
                 </td>
-                <td>
-                  <a href="<%= url.shortCode %>" class="short-url" target="_blank">
-                    <%= url.shortCode %>
-                  </a>
-                </td>
-                <td><code><%= url.shortCode %></code></td>
-                <td class="clicks"><%= url.clicks %></td>
-                <td class="date"><%= new Date(url.createdAt).toLocaleString('pt-BR') %></td>
+                <td><code class="url-code"><%= url.shortCode %></code></td>
+                <td class="url-clicks"><%= url.clicks %></td>
+                <td class="url-date"><%= new Date(url.createdAt).toLocaleString('pt-BR') %></td>
               </tr>
             <% }); %>
           </tbody>
         </table>
-      <% } else { %>
-        <div class="no-urls">
-          <h3>Nenhuma URL encurtada ainda</h3>
-          <p>Comece encurtando sua primeira URL na <a href="/">página inicial</a>!</p>
-        </div>
-      <% } %>
-    </div>
-  </body>
+      </div>
+    <% } else { %>
+      <div class="no-urls">
+        <h3>Nenhuma URL encurtada ainda</h3>
+        <p>Encurte sua primeira URL na <a href="/">página inicial</a>.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('partials/footer') %>
+</body>
 </html>

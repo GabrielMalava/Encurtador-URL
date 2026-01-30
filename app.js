@@ -21,9 +21,14 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended:true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use((req, res, next) => {
+  res.locals.appName = 'URL Shortener';
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -35,7 +40,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  res.locals.pageTitle = `Erro ${err.status || 500} — ${res.locals.appName}`;
   res.status(err.status || 500);
   res.render('error');
 });

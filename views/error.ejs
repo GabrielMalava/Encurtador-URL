@@ -1,3 +1,22 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <main class="error-page">
+    <div class="error-box">
+      <p class="error-status"><%= error.status || 500 %></p>
+      <h1 class="error-message"><%= message %></h1>
+      <a href="/" class="shortener-btn">Voltar ao início</a>
+      <% if (typeof error !== 'undefined' && error.stack) { %>
+        <pre class="error-stack"><%= error.stack %></pre>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>
